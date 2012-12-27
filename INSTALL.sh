@@ -1,11 +1,11 @@
 #!/bin/bash
 
-#è®¾ç½®æƒé™
+#ÉèÖÃÈ¨ÏÞ
 cp cattproc.sh /usr/local/bin/cattproc
 chown cattsoft:cattsoft /usr/local/bin/cattproc
 chmod a+x /usr/local/bin/cattproc
 
-#æ·»åŠ çŽ¯å¢ƒå˜é‡ï¼š
+#Ìí¼Ó»·¾³±äÁ¿£º
 export PATH=$PATH:/usr/local/bin/
 echo "export PATH=$PATH:/usr/local/bin/" >> /home/cattsoft/.bash_profile
 echo "export PATH=$PATH:/usr/local/bin/" >> /etc/profile

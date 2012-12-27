@@ -13,7 +13,7 @@
 #         NOTES:  ---
 #        AUTHOR: LiangHuiQiang 
 #  ORGANIZATION: 
-#       CREATED: 2012/11/20 11:33:04 ‰∏≠ÂõΩÊ†áÂáÜÊó∂Èó¥
+#       CREATED: 2012/11/20 11:33:04 ÷–π˙±Í◊º ±º‰
 #      REVISION:  ---
 #===============================================================================
 
@@ -80,25 +80,28 @@ function getScriptValue()
     while read LINE ; do
        
          if [ ! -f $LINE ] ; then
-                exit "$LINEÊñá‰ª∂‰∏çÂ≠òÂú®";
+                exit "$LINEŒƒº˛≤ª¥Ê‘⁄";
             fi
 
-        #ËøáÊª§CATT_PROC_MANAGER‰∏çÁ≠â1ÁöÑÁ®ãÂ∫è„ÄÇ
-        MANAGER=`awk -F"=" '$1~/^CATT_PROC_MANAGER/{gsub(/[[:blank:]]*/,"",$2);printf "%d",$2}' $LINE|tr '\n' ' ' |tr '\r' ' '`
+        #π˝¬ÀCATT_PROC_MANAGER≤ªµ»1µƒ≥Ã–Ú°£
+        MANAGER=`awk -F"=" 'BEGIN{gsub(/[[:blank:]]*/,"",$1)}$1~/^CATT_PROC_MANAGER/{gsub(/[[:blank:]]*/,"",$2);printf "%d",$2}' $LINE|tr '\n' ' ' |tr '\r' ' '`
         MANAGER=$((MANAGER+0))
         if [ "$MANAGER" -eq 1 ] ; then
 
             PROC_START=$LINE;
-            #Ëé∑ÂèñÁ®ãÂ∫èÊ†áËØÜÁ¨¶
-            PROC_NAME=`awk -F"=" '$1~/CATT_PROC_NAME$/{gsub(/\"/,"",$2);print $2}' $LINE |tr '\n' ' '|tr '\r' ' '`
+            #ªÒ»°≥Ã–Ú±Í ∂∑˚
+            PROC_NAME=`awk -F"=" 'BEGIN{gsub(/[[:blank:]]*/,"",$1)}$1~/CATT_PROC_NAME$/{gsub(/\"/,"",$2);print $2}' $LINE |tr '\n' ' ' |tr '\r' ' '|awk '{gsub(/\"/,"",$1);print $1}'`
             
             if [ -z "$PROC_NAME" ] ; then
-                   
+                  echo "----------"
+                  echo "[warn]CATT_PROC_NAME≈‰÷√≥ˆ¥Ì£°"
+                  echo "«ÎºÏ≤ÈŒƒº˛($LINE)"
+                  echo "----------"
                   continue ;
             fi
-            #Ëé∑ÂèñÁ®ãÂ∫è‰∏≠ÊñáÂêçÁß∞
-            PROC_NAME_ZH=`awk -F"=" '$1~/CATT_PROC_NAME_ZH$/{gsub(/\"/,"",$2);print $2}' $LINE|tr '\n' ' '|tr '\r' ' '` 
-#           Â¶ÇÊûú‰∏≠ÊñáÂêçÁß∞Êú™ÂÆö‰πâÔºåÂàô‰ΩøÁî®Ê†áËØÜÁ¨¶‰Ωú‰∏∫‰∏≠ÊñáÂêçÁß∞
+            #ªÒ»°≥Ã–Ú÷–Œƒ√˚≥∆
+            PROC_NAME_ZH=`awk -F"=" 'BEGIN{gsub(/[[:blank:]]*/,"",$1)}$1~/CATT_PROC_NAME_ZH$/{gsub(/\"/,"",$2);print $2}' $LINE|tr '\n' ' ' |tr '\r' ' '|awk '{gsub(/\"/,"",$1);print $1}'` 
+#           »Áπ˚÷–Œƒ√˚≥∆Œ¥∂®“Â£¨‘Ú π”√±Í ∂∑˚◊˜Œ™÷–Œƒ√˚≥∆
             if [ -z $PROC_NAME_ZH ] ;then
 #echo "unknow"
                 PROC_NAME_ZH=$PROC_NAME;    
@@ -141,7 +144,7 @@ function getScriptValue()
 #-------------------------------------------------------------------------------
 function getProcStat(){
     echo ""
-    #Ëé∑ÂèñÁ®ãÂ∫èÊï∞ÈáèÔºõ
+    #ªÒ»°≥Ã–Ú ˝¡ø£ª
     PSUM=${#CATT_PROC_NAME[*]};
 
 for val in `seq 0 $((PSUM-1))`
@@ -173,7 +176,7 @@ do
 done
 #    PSUM=${#CATT_PROC_NAME[*]}; 
 #    echo "";
-#    ps -e o pid,pmem,pcpu,stat,args|head -1|sed 's/PID/ËøõÁ®ãÂè∑/;s/%MEM/ÂÜÖÂ≠òÂç†Áî®Áéá/;s/%CPU/CPUÂç†Áî®Áéá/;s/STAT/Áä∂ÊÄÅ/'|awk '{printf("%4s\t%8s\t%6s\t%10s\t%10s\t%10s\n","Á®ãÂ∫è","ËøõÁ®ãÊ†áËØÜ",$1,$2,$3,$4)}' 
+#    ps -e o pid,pmem,pcpu,stat,args|head -1|sed 's/PID/Ω¯≥Ã∫≈/;s/%MEM/ƒ⁄¥Ê’º”√¬ /;s/%CPU/CPU’º”√¬ /;s/STAT/◊¥Ã¨/'|awk '{printf("%4s\t%8s\t%6s\t%10s\t%10s\t%10s\n","≥Ã–Ú","Ω¯≥Ã±Í ∂",$1,$2,$3,$4)}' 
 #for val in `seq 0 $((PSUM-1))`
 #do
 #   TMP_NAME_ZH=`echo ${CATT_PROC_NAME_ZH[$val]}`
@@ -194,11 +197,11 @@ done
 #printf "%4s %8s" "$P_NAME" "$TMP_NAME" ;
 #        ps -e o pid,pmem,pcpu,stat,args | grep $TMP_NAME  |awk '$0!~/grep/{printf("%4s\t%8s\t%6s\t%10s\t%10s\t%10s\n","'$P_NAME'","'$TMP_NAME'",$1,$2,$3,$4)}'
 #else
-#        printf "%s%s\n" "[Êú™ËøêË°å]" ${P_NAME}" ("`dirname ${CATT_PROC_START[$val]}`") ">>/tmp/.ps_unrun.tmp 
+#        printf "%s%s\n" "[Œ¥‘À––]" ${P_NAME}" ("`dirname ${CATT_PROC_START[$val]}`") ">>/tmp/.ps_unrun.tmp 
 
 #fi
 #ps aux|grep ${PROC_NAME[0]} |grep -v grep
-#done
+#done#Ω¯≥Ãµƒ÷–Œƒ√˚≥∆°£
 #echo "";
 #echo "------------------------------------------";
 #cat /tmp/.ps_unrun.tmp 2>/dev/null
@@ -224,7 +227,7 @@ function ListProc(){
 #    echo "$PSUM";
     
     if [ $HAVE_RUNNING -ne 0 ] ; then
-    ps -e o pid,pmem,pcpu,stat,args|head -1|sed 's/PID/ËøõÁ®ãÂè∑/;s/%MEM/ÂÜÖÂ≠òÂç†Áî®Áéá/;s/%CPU/CPUÂç†Áî®Áéá/;s/STAT/Áä∂ÊÄÅ/'|awk '{printf("%10s\t%8s\t%6s\t%10s\t%10s\t%10s\n","Á®ãÂ∫è","ËøõÁ®ãÊ†áËØÜ",$1,$2,$3,$4)}' 
+    ps -e o pid,pmem,pcpu,stat,args|head -1|sed 's/PID/Ω¯≥Ã∫≈/;s/%MEM/ƒ⁄¥Ê’º”√¬ /;s/%CPU/CPU’º”√¬ /;s/STAT/◊¥Ã¨/'|awk '{printf("%10s\t%8s\t%6s\t%10s\t%10s\t%10s\n","≥Ã–Ú","Ω¯≥Ã±Í ∂",$1,$2,$3,$4)}' 
     else
         echo "not program running!"
     fi
@@ -238,7 +241,7 @@ if [ $PS_PROC -ne 0 ];then
 #printf "%4s %8s" "${CATT_PROC_NAME_ZH[$val]}" "${CATT_PROC_NAME[$val]}" ;
         ps -e o pid,pmem,pcpu,stat,args |awk '$1~/'"$PS_PID"'/&&$0!~/grep/{printf("%10s\t%8s\t%6s\t%10s\t%10s\t%10s\n","'$NAME_ZH'","'$NAME'",$1,$2,$3,$4)}'
 else
-        printf "%s%s\n" "[Êú™ËøêË°å]" $NAME_ZH" ("`dirname ${CATT_PROC_START[$val]}`") ">>/tmp/.ps_unrun.tmp 
+        printf "%s%s\n" "[Œ¥‘À––]" $NAME_ZH" ("`dirname ${CATT_PROC_START[$val]}`") ">>/tmp/.ps_unrun.tmp 
 
 fi
 #ps aux|grep ${PROC_NAME[0]} |grep -v grep
@@ -253,7 +256,7 @@ rm -f /tmp/.ps_unrun.tmp 2>/dev/null
 
 #---  FUNCTION  ----------------------------------------------------------------
 #          NAME:  StartProc
-#   DESCRIPTION:  ÂêØÂä®ËøõÁ®ã„ÄÄ
+#   DESCRIPTION:  ∆Ù∂ØΩ¯≥Ã°°
 #    PARAMETERS:  
 #       RETURNS:  
 #-------------------------------------------------------------------------------
@@ -272,7 +275,7 @@ function StartProc(){
 
 #---  FUNCTION  ----------------------------------------------------------------
 #          NAME:  StopProc
-#   DESCRIPTION:  ÂÅúÊ≠¢ËøõÁ®ã
+#   DESCRIPTION:  Õ£÷πΩ¯≥Ã
 #    PARAMETERS:  
 #       RETURNS:  
 #-------------------------------------------------------------------------------
@@ -282,22 +285,117 @@ function StopProc(){
         Len=${#CATT_PROC_NAME[*]} 
         for (( CNTR=0; CNTR<$Len; CNTR+=1 )); do
             TMP_KILL_PID=`echo ${CATT_PROC_PID[$CNTR]}`;
-            echo  "ÂáÜÂ§áÁªìÊùüËøõÁ®ãÔºö$TMP_KILL_PID"
+            echo  "◊º±∏Ω· ¯Ω¯≥Ã£∫$TMP_KILL_PID"
             kill -15 "$TMP_KILL_PID";  
             CHK_PID=`ps -ef|awk '$2~/'"$TMP_KILL_PID"'/'|wc -l`
             if [ $CHK_PID -ne 0 ];then
                 kill -9 "$TMP_KILL_PID";
                 CHK_PID2=`ps -ef|awk '$2~/'"$TMP_KILL_PID"'/'|wc -l`
                 if [ $CHK_PID2 -ne 0 ];then
-                    exit "[error]ÁªìÊùüËøõÁ®ã$TMP_KILL_PIDÂá∫Èîô!"
+                    exit "[error]Ω· ¯Ω¯≥Ã$TMP_KILL_PID≥ˆ¥Ì!"
                 fi
             fi
-                echo "${CATT_PROC_NAME_ZH[$CNTR]}   Â∑≤ÂÅúÊ≠¢Ôºõ"
+                echo "${CATT_PROC_NAME_ZH[$CNTR]}   “—Õ£÷π£ª"
                 echo "======================================"
         done
 
     fi
 }
+
+#---  FUNCTION  ----------------------------------------------------------------
+#          NAME:  readme
+#   DESCRIPTION:  
+#    PARAMETERS:  
+#       RETURNS:  
+#-------------------------------------------------------------------------------
+
+function readme(){
+    cat << EOF
+ π”√Àµ√˜
+??	¡–≥ˆÀ˘”–±ªº‡ ”µƒΩ¯≥Ã£∫cattproc list
+??	∆Ù∂ØÀ˘”–±ªº‡ ”µƒΩ¯≥Ã£∫cattproc startall
+??	Õ£÷πÀ˘”–±ªº‡ ”µƒΩ¯≥Ã: cattproc stopall
+
+================
+≈‰÷√±ªº‡ ”Ω¯≥Ã£∫
+–ﬁ∏ƒ±ªº‡ ”Ω¯≥Ãµƒstart.shŒƒº˛£¨≤¢º”»Î»Áœ¬≤Œ ˝£∫
+CATT_PROC_MANAGER=1°°°°°°°°°° # «∑Òº‡ ”±æΩ¯≥Ã£¨…Ë÷√Œ™1 ±º‡ ”£¨0Œ™ ≤ªº‡ ”
+CATT_PROC_NAME=			    #∂®“ÂΩ¯≥Ãµƒ√˚≥∆£¨“™«Û”Îps -ef÷–µƒΩ¯≥Ã√˚≥∆“ª÷¬(ªÚ’ﬂƒ‹πªŒ®“ª∆•≈‰“ª∏ˆΩ¯≥Ã)
+CATT_PROC_NAME_ZH=         #Ω¯≥Ãµƒ÷–Œƒ√˚≥∆°£
+
+========================
+π§◊˜‘≠¿Ì
+
+À—À˜/home/cattsoftƒø¬ºœ¬À˘”–start.shΩ≈±æ£¨≤¢∏˘æ›start.shΩ≈±æ÷–µƒ≤Œ ˝
+
+≤Œ ˝Àµ√˜£∫
+CATT_PROC_MANAGER°°°°°°°°°° # «∑Òº‡ ”±æΩ¯≥Ã£¨…Ë÷√Œ™1 ±º‡ ”£¨0Œ™ ≤ªº‡ ”
+CATT_PROC_NAME			  #∂®“ÂΩ¯≥Ãµƒ√˚≥∆£¨“™«Û”Îps -ef÷–µƒΩ¯≥Ã√˚≥∆“ª÷¬(ªÚ’ﬂƒ‹πªŒ®“ª∆•≈‰“ª∏ˆΩ¯≥Ã)
+CATT_PROC_NAME_ZH°°°°°°°°°° #Ω¯≥Ãµƒ÷–Œƒ√˚≥∆°£
+
+ªÒ»°À˘”–≥Ã–Úµƒ◊¥øˆ°£
+=================================
+¿˝◊”
+
+¿˝»Á/home/cattsoft/collect01/start.shΩ≈±æ£¨ƒ⁄»›»Áœ¬£∫
+
+#/bin/bash
+CATT_PROC_NAME_ZH=≤…ºØ01
+CATT_PROC_MANAGER=1
+CATT_PROC_NAME=collect01
+#ps -ef |grep collect01  |grep -v grep |awk '{print $2}'| xargs kill -9
+
+sleep 3600
+
+ 
+
+÷¥––cattprocΩ≈±æ, π”√list≤Œ ˝°£
+[cattsoft@VMTEST01 cattproc]$ cattproc list
+
+≥Ã–Ú    Ω¯≥Ã±Í ∂        Ω¯≥Ã∫≈  ƒ⁄¥Ê’º”√¬       CPU’º”√¬            ◊¥Ã¨
+
+------------------------------------------
+[Œ¥‘À––]≤…ºØ02 (/home/cattsoft/collect02) 
+[Œ¥‘À––]≤…ºØ01 (/home/cattsoft/collect01) 
+[cattsoft@VMTEST01 cattproc]$
+
+÷¥––cattporcΩ≈±æ£¨ π”√startall≤Œ ˝£¨∆Ù∂ØÀ˘”–Ω¯≥Ã°£
+[cattsoft@VMTEST01 cattproc]$ cattproc startall
+
+‘Ÿ¥Œ≤Èø¥
+[cattsoft@VMTEST01 cattproc]$ cattproc list
+
+≥Ã–Ú    Ω¯≥Ã±Í ∂        Ω¯≥Ã∫≈  ƒ⁄¥Ê’º”√¬       CPU’º”√¬            ◊¥Ã¨
+≤…ºØ02  collect02         8227         0.0             0.0               S
+≤…ºØ01  collect01         8231         0.0             0.0               S
+
+------------------------------------------
+[cattsoft@VMTEST01 cattproc]$
+
+
+===================================
+∏Ω:Ω¯≥Ã◊¥Ã¨Àµ√˜
+
+D    ≤ªø…÷–∂œÀØ√ﬂ£ª
+R    ‘À––ªÚø…‘À––£ª
+S    ø…÷–∂œÀØ√ﬂ£ª
+T    ‘›Õ£◊¥Ã¨£¨∏˙◊Ÿ◊¥Ã¨£ª
+X    ÕÀ≥ˆ◊¥Ã¨£ª
+Z    Ω© ¨Ω¯≥Ã£ª
+
+<    ∏ﬂ”≈œ»º∂
+N    µÕ”≈œ»º∂
+L    “≥√Ê±ªÀ¯Ω¯ƒ⁄¥Ê
+s    ¡ÏÕ∑Ω¯≥Ã
+l    ∂‡œﬂ≥Ã
++    «∞Ã®Ω¯≥Ã
+
+
+EOF
+
+
+}
+
 
 #===============================================================================
 #  MAIN SCRIPT
@@ -333,9 +431,13 @@ case "$1" in
         test)
                 getScriptValue;
                 ListProc;               
+                readme;
+        ;;
+        help)   
+                readme;
         ;;
         *)
-                echo $"Usage: $0 {list|startall|stopall}"
+                echo $"Usage: $0 {list|startall|stopall|help}"
                 RETVAL=2
 esac
 exit $RETVAL
