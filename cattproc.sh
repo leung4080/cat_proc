@@ -24,7 +24,7 @@
 #===============================================================================
 
 THIS_PID=$$
-export LANG=c
+SYS_LANG=`env|grep LANG|awk -F"=" '{print $NF}'`
 export PATH=$PATH:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/sbin:/usr/local/sbin
 SCRIPT_PATH=$(dirname $0);
 cd $SCRIPT_PATH;
@@ -37,6 +37,7 @@ declare -a CATT_PROC_NAME
 declare -a CATT_PROC_NAME_ZH
 declare -a CATT_PROC_START
 declare -i RETVAL=0
+declare -i HAVE_RUNNING=0
 
 #===============================================================================
 #  FUNCTION DEFINITIONS
@@ -148,7 +149,7 @@ function getProcStat(){
     PSUM=${#CATT_PROC_NAME[*]};
 
 for val in `seq 0 $((PSUM-1))`
-do
+do 
 #   echo $val;
     PROC_NAME=`echo ${CATT_PROC_NAME[$val]}`
 #   echo $PROC_NAME;
@@ -203,11 +204,12 @@ done
 #ps aux|grep ${PROC_NAME[0]} |grep -v grep
 #done#进程的中文名称。
 #echo "";
-#echo "------------------------------------------";
+#echo "---------------------------------- echo $LANG--------";
 #cat /tmp/.ps_unrun.tmp 2>/dev/null
 #rm -f /tmp/.ps_unrun.tmp 2>/dev/null
     
 }
+
 
 
 #---  FUNCTION  ----------------------------------------------------------------
@@ -233,17 +235,17 @@ function ListProc(){
     fi
 for val in `seq 0 $((PSUM-1))`
 do
-PS_PROC=`ps -ef|grep ${CATT_PROC_NAME[$val]} |grep -v grep|wc -l`
-if [ $PS_PROC -ne 0 ];then
+    PS_PROC=`ps -ef|grep ${CATT_PROC_NAME[$val]} |grep -v grep|wc -l`
+    if [ $PS_PROC -ne 0 ];then
     PS_PID=`echo ${CATT_PROC_PID[$val]}`
     NAME=`echo ${CATT_PROC_NAME[$val]}`
     NAME_ZH=`echo ${CATT_PROC_NAME_ZH[$val]}`
 #printf "%4s %8s" "${CATT_PROC_NAME_ZH[$val]}" "${CATT_PROC_NAME[$val]}" ;
         ps -e o pid,pmem,pcpu,stat,args |awk '$1~/'"$PS_PID"'/&&$0!~/grep/{printf("%10s\t%8s\t%6s\t%10s\t%10s\t%10s\n","'$NAME_ZH'","'$NAME'",$1,$2,$3,$4)}'
-else
+    else
         printf "%s%s\n" "[未运行]" $NAME_ZH" ("`dirname ${CATT_PROC_START[$val]}`") ">>/tmp/.ps_unrun.tmp 
 
-fi
+    fi
 #ps aux|grep ${PROC_NAME[0]} |grep -v grep
 done
 echo "";
@@ -266,7 +268,9 @@ function StartProc(){
     if [ "$1" = "all" ] ; then
         Len=${#CATT_PROC_START[*]} 
         for (( CNTR=0; CNTR<$Len; CNTR+=1 )); do
+            echo "启动程序:${CATT_PROC_NAME_ZH[$CNTR]}";
             echo "bash ${CATT_PROC_START[$CNTR]} &" |bash
+            echo "完成."
         done
 
         fi
